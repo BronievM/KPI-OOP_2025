@@ -5,7 +5,6 @@
         class Calculate
         {
             public int Number { get; set; }
-            private bool OperationAdding;
             public Calculate(int number)
             {
                 Number = number;
@@ -17,6 +16,7 @@
                 int C3 = Number % 3;
                 int C5 = Number % 5;
                 int C7 = Number % 7;
+                Console.WriteLine($"C2={C2}, C3={C3}, C5={C5}, C7={C7}");
                 bool IsAdding = false;
                 double Sum = 0;
 
@@ -33,14 +33,36 @@
                         switch (C5)
                         {
                             case 0: temp = indexI * indexJ; break;
-                            case 1: temp = indexJ != 0 ? (double)indexI / indexJ : 0; break;
-                            case 2: temp = indexJ != 0 ? indexI % indexJ : 0; break;
+                            case 1: 
+                                { 
+                                    if (indexJ != 0) temp = (double)indexI / indexJ;
+                                    else temp = 0; 
+                                    break; 
+                                }
+                            case 2:
+                                {
+                                    if (indexJ != 0) temp = indexI % indexJ;
+                                    else temp = 0;
+                                    break;
+                                }
                             case 3: temp = indexI + indexJ; break;
                             case 4: temp = indexI - indexJ; break;
                         }
 
-                        if (IsAdding) Sum += temp + C3;
-                        else Sum += temp - C3;
+                        if (IsAdding)
+                        {
+                            if (indexI + C3 != 0)
+                                Sum += temp / (indexI + C3);
+                            else
+                                Sum += temp / 1; 
+                        }
+                        else
+                        {
+                            if (indexI - C3 != 0)
+                                Sum += temp / (indexI - C3);
+                            else
+                                Sum += temp / 1; 
+                        }
 
                     }
                 }
@@ -70,10 +92,14 @@
         static void Main(string[] args)
         {
             int number = 4218;
-            Calculate calc = new Calculate(number);
-            double result = calc.Calculation(5, 5);
+            Console.WriteLine($"Варiант: {number}");
+            Console.Write("Введiть n: ");
+            int n = int.Parse(Console.ReadLine());
+            Console.Write("Введiть m: ");
+            int m = int.Parse(Console.ReadLine());
 
-            Console.WriteLine("Результат обчислення: " + result);
+            Calculate calc = new Calculate(number);
+            Console.WriteLine($"Результат обчислення: {calc.Calculation(n, m)}");
         }
     }
 }
